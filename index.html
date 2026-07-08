@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irisen — The science of a happy life</title>
+<meta name="description" content="Irisen is a personal life operating system built around four pillars — Physical, Mental, Social, Financial. Powered by Iris, your AI. Get early access.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Brand Board v3 backdrop; type per Master Document §10 */
+  --bg:#0a0a0a; --text:#F4F3EA; --white:#FAFAF6; --muted:#8a8f9c; --faint:#3d4750;
+  --line:rgba(244,243,234,.08);
+  --phys:#33CDFF; --ment:#B548FE; --fin:#FF13DB; --soc:#7CA0FF;
+  --grad:linear-gradient(90deg,#33CDFF,#0088DD,#FF13DB);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-out:cubic-bezier(0.23,1,0.32,1);   /* strong ease-out (emil-design-eng) */
+  --ease-io:cubic-bezier(0.77,0,0.175,1);
+}
+/* film grain only (orbs removed) */
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-weight:300;font-size:16px;line-height:1.7;overflow-x:hidden}
+::selection{background:#B548FE;color:var(--bg)}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wrap{max-width:1140px;margin:0 auto;padding:0 32px}
+#progress{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--grad);z-index:99}
+/* sticky CTA bar */
+#stickycta{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:rgba(13,21,24,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transform:translateY(-100%);transition:transform 300ms var(--ease-out)}
+#stickycta.on{transform:none}
+.sc-mark{width:30px;height:20px;border-radius:50%;background:conic-gradient(from 210deg,#33CDFF,#0088DD,#FF13DB,#33CDFF)}
+#sc-btn{background:var(--white);color:var(--bg);border:none;border-radius:99px;padding:11px 22px;font-family:'Sora';font-weight:600;font-size:13.5px;cursor:pointer;transition:transform 160ms var(--ease-out)}
+#sc-btn:hover{transform:scale(1.04)}
+#sc-btn:active{transform:scale(.97)}
+/* responsive pass */
+@media(max-width:700px){
+  section{padding:96px 0}
+  .wrap{padding:0 20px}
+  #eye-wrap{max-width:220px!important;margin-bottom:32px!important}
+  h1{font-size:clamp(36px,10vw,48px)}
+  .pill-line{gap:10px;font-size:11px;letter-spacing:.2em;justify-content:center}
+  .wl-form{flex-direction:column;width:100%;max-width:400px}
+  .wl-form button{width:100%;padding:17px}
+  .wl-form input{text-align:center}
+  #ps-stage{height:230px}
+  .ps-col b{max-width:44px}
+  .pillar-copy{gap:24px;margin-top:48px;grid-template-columns:1fr 1fr}
+  .chat{max-width:100%}
+  .msg{font-size:13.5px}
+  #problem-pin{height:180vh}
+  .trust-grid{gap:32px}
+  footer{padding:56px 20px 40px}
+}
+
+/* section scaffolding — editorial, no boxes */
+section{padding:160px 0;border-top:1px solid var(--line)}
+.slabel{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--faint);margin-bottom:44px;display:flex;gap:14px;align-items:center;justify-content:center}
+.slabel::before{content:"";width:34px;height:1px;background:var(--grad)}
+h2{font-weight:800;font-size:clamp(34px,5.2vw,64px);letter-spacing:-.025em;line-height:1.12}
+
+/* reveals — spring system (kept) */
+.rv{opacity:0;transform:translateY(36px) scale(.97);transition:opacity .7s ease,transform .8s var(--spring)}
+.rv.vis{opacity:1;transform:none}
+
+/* ---------- HERO — centered (Duolingo) ---------- */
+#hero{min-height:100vh;display:flex;align-items:flex-start;border-top:none;padding:clamp(88px,12vh,150px) 0 100px}
+#hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0}
+#hero .wl-form{justify-content:center}
+/* alternating feature rows (Duolingo) */
+.feat{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(44px,6vw,72px)}
+.feat h2{font-size:clamp(28px,3.8vw,44px)}
+.feat .f-text{display:flex;flex-direction:column;align-items:center}
+.feat .f-text p.sub-line{color:var(--muted);margin:16px auto 0;font-size:15.5px;max-width:420px}
+.feat .f-visual{width:100%}
+.tagline{font-size:12px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);margin-bottom:26px}
+h1{font-weight:800;font-size:clamp(44px,6.6vw,84px);letter-spacing:-.03em;line-height:1.04}
+.pill-line{margin-top:26px;font-size:13px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;display:flex;gap:16px;flex-wrap:wrap}
+.wl-form{margin-top:48px;display:flex;gap:10px;max-width:460px}
+.wl-form input{flex:1;background:transparent;border:none;border-bottom:1px solid rgba(244,243,234,.25);padding:14px 2px;color:var(--white);font-family:'Sora';font-size:16px;font-weight:300;outline:none;transition:border-color 180ms var(--ease-out);min-width:0;border-radius:0}
+.wl-form input:focus{border-bottom-color:#B548FE}
+.wl-form button{background:var(--white);color:var(--bg);border:none;border-radius:99px;padding:16px 30px;font-family:'Sora';font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;transition:transform 160ms var(--ease-out)}
+.wl-form button:hover{transform:translateY(-2px) scale(1.03)}
+.wl-form button:active{transform:scale(.97);transition-duration:100ms}
+.wl-note{margin-top:16px;font-size:12px;color:var(--faint);letter-spacing:.04em}
+.wl-done{margin-top:48px;display:none;flex-direction:column;gap:8px;animation:donepop .6s var(--spring)}
+.wl-done .big{font-weight:800;font-size:26px}
+.wl-done .fine{color:var(--muted);font-size:14px;max-width:400px}
+@keyframes donepop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+#eye-wrap{position:relative;width:100%;max-width:440px;justify-self:center}
+@media(max-width:900px){#hero .wrap{grid-template-columns:1fr;gap:40px}#eye-wrap{max-width:300px;order:-1}}
+
+/* exact gz gaze from the loading-animations file, verbatim (kept) */
+.gz{transform-box:fill-box;transform-origin:center;animation:gz 7s infinite}
+@keyframes gz{
+  0%,10%   {transform:translate(0px,0px);    animation-timing-function:cubic-bezier(.85,.1,.15,1);}
+  13%,30%  {transform:translate(26px,-5px);  animation-timing-function:cubic-bezier(.85,.1,.15,1);}
+  33%,49%  {transform:translate(-23px,-13px);animation-timing-function:cubic-bezier(.85,.1,.15,1);}
+  52%,60%  {transform:translate(-4px,-3px);  animation-timing-function:cubic-bezier(.85,.1,.15,1);}
+  63%,82%  {transform:translate(8px,14px);   animation-timing-function:cubic-bezier(.85,.1,.15,1);}
+  85%,100% {transform:translate(0px,0px);}
+}
+@media (prefers-reduced-motion:reduce){.gz{animation:none}.rv{transition:opacity .3s}}
+
+/* ---------- PROBLEM ---------- */
+#problem-pin{height:220vh;border-top:1px solid var(--line)}
+#problem{position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;border-top:none}
+#problem .line{font-weight:800;font-size:clamp(36px,6vw,72px);letter-spacing:-.03em;line-height:1.15;max-width:900px;margin:0 auto}
+#problem .pw{color:rgba(244,243,234,.14);transition:color .35s ease}
+#problem .pw.lit{color:var(--white)}
+#problem .pw.grad-text-lit.lit{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#trust{text-align:center}
+#iris{text-align:center}
+#problem .line .dim{color:var(--faint)}
+
+/* ---------- PILLARS ---------- */
+#pillars .grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:end}
+@media(max-width:900px){#pillars .grid{grid-template-columns:1fr}}
+#ps-num{font-weight:800;font-size:clamp(80px,11vw,150px);letter-spacing:-.04em;line-height:1}
+.ps-cap{font-size:11px;letter-spacing:.35em;color:var(--faint);text-transform:uppercase;margin-top:8px}
+#ps-stage{display:flex;gap:clamp(16px,3.5vw,36px);align-items:flex-end;height:340px;max-width:560px;width:100%;margin:0 auto}
+.ps-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:12px;height:100%;flex:1}
+.ps-col b{display:block;width:100%;max-width:64px;border-radius:12px;background:var(--c);box-shadow:0 0 44px -10px var(--c);height:50%}
+.ps-col em{font-style:normal;font-weight:800;font-size:15px;color:var(--c)}
+.ps-col span{font-size:10.5px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+.pillar-copy{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:36px;margin-top:72px;text-align:center}
+.pillar-copy h3{font-weight:800;font-size:18px;margin-bottom:4px}
+.pillar-copy p{font-size:13.5px;color:var(--muted)}
+.connect-line{margin-top:56px;font-size:16px;font-weight:400;color:var(--text);text-align:center}
+
+/* ---------- IRIS ---------- */
+#iris .grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+@media(max-width:900px){#iris .grid{grid-template-columns:1fr}}
+.chat{display:flex;flex-direction:column;gap:16px;max-width:560px}
+.msg{padding:20px 24px;border-radius:18px;font-size:17px;line-height:1.6;opacity:0;transform:translateY(16px) scale(.9);transition:opacity .4s ease,transform .55s var(--spring)}
+.msg.vis{opacity:1;transform:none}
+.msg.user{background:rgba(244,243,234,.05);align-self:flex-end;max-width:88%;border-bottom-right-radius:4px}
+.msg.iris{border:1px solid rgba(244,243,234,.14);align-self:flex-start;max-width:88%;border-bottom-left-radius:4px}
+.msg.iris::before{content:"IRIS";display:block;font-size:9px;letter-spacing:.3em;margin-bottom:8px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600}
+.typing{align-self:flex-start;display:none;gap:5px;padding:14px 18px;border:1px solid rgba(244,243,234,.14);border-radius:16px;border-bottom-left-radius:4px}
+.typing.on{display:flex}
+.typing b{width:7px;height:7px;border-radius:99px;background:var(--faint);animation:tb 1s infinite}
+.typing b:nth-child(2){animation-delay:.15s}.typing b:nth-child(3){animation-delay:.3s}
+@keyframes tb{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+/* feature rows with live demos */
+.fitem{display:flex;flex-direction:column;align-items:center;text-align:center;gap:30px;padding:88px 0;border-top:1px solid var(--line);margin-top:0}
+.fitem:first-of-type{margin-top:80px}
+.fnum{font-size:13px;color:var(--faint);font-weight:600;letter-spacing:.25em}
+.fitem h3{font-weight:800;font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.15;max-width:20ch}
+.fitem .f-text p{margin:14px auto 0;font-size:15.5px;color:var(--muted);max-width:420px}
+.f-demo{min-height:280px;display:flex;flex-direction:column;justify-content:center;gap:18px;width:100%;max-width:480px;margin:0 auto}
+@media(max-width:820px){.f-demo{min-height:220px}}
+.d-cap{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:-4px}
+.d-cap.out{color:var(--muted);margin-top:6px;margin-bottom:-8px}
+.d-foot{font-size:14px;color:var(--muted);margin-top:6px}
+.d-foot b{color:var(--text);font-weight:600}
+/* 01 mapping */
+.d-type{font-size:20px;color:var(--text);min-height:64px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.d-caret{display:inline-block;width:2px;height:22px;background:var(--white);margin-left:3px;vertical-align:-3px;animation:blinkc 1s steps(1) infinite}
+@keyframes blinkc{50%{opacity:0}}
+.d-tags{display:flex;gap:14px;min-height:40px;justify-content:center}
+.d-tag{font-size:12.5px;letter-spacing:.2em;font-weight:600;color:var(--c);border:1px solid var(--c);border-radius:99px;padding:9px 18px;opacity:0;transform:translateY(10px) scale(.8);transition:opacity .4s ease,transform .55s var(--spring)}
+.d-tag.on{opacity:1;transform:none}
+/* 02 scores */
+.d-score{display:grid;grid-template-columns:96px 1fr 44px;gap:16px;align-items:center;font-size:13px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.d-score i{display:block;height:11px;border-radius:99px;background:rgba(244,243,234,.07);position:relative;overflow:hidden}
+.d-score i::after{content:"";position:absolute;inset:0;width:0%;background:var(--c);border-radius:99px;transition:width 1.2s var(--ease-io)}
+.d-score.on i::after{width:var(--w)}
+.d-score em{font-style:normal;font-weight:600;color:var(--text);font-size:17px;text-align:right}
+/* 03 diagnosis */
+.d-big{display:flex;align-items:baseline;gap:12px;justify-content:center}
+.d-big b{font-size:76px;font-weight:800}
+.d-big span{font-size:13px;letter-spacing:.25em;color:var(--faint)}
+.d-line{width:170px;height:84px;margin:0 auto}
+.f-demo.play .d-line path{animation:drawl 1s var(--ease-io) .5s forwards}
+@keyframes drawl{to{stroke-dashoffset:0}}
+.d-why{font-size:17px;color:var(--text);opacity:0;transform:translateY(8px);transition:opacity .4s ease 1.4s,transform .5s var(--spring) 1.4s;max-width:340px;margin:0 auto}
+.f-demo.play .d-why{opacity:1;transform:none}
+/* 04 pattern */
+.d-spark{display:flex;align-items:center;gap:20px;justify-content:center}
+.d-spark span{font-size:12px;letter-spacing:.22em;font-weight:600;width:64px}
+.d-spark svg{flex:1;max-width:340px;height:52px}
+.d-spark polyline{stroke-dasharray:260;stroke-dashoffset:260}
+.f-demo.play .d-spark polyline{animation:drawl 1.4s var(--ease-io) forwards}
+.f-demo.play .d-spark:last-child polyline{animation-delay:.9s}
+.d-pulse{width:8px;height:36px;margin:0 auto;border-left:1.5px dashed rgba(244,243,234,.3);opacity:0;transition:opacity .4s ease 1.9s}
+.f-demo.play .d-pulse{opacity:1}
+/* 05 integrations / improve */
+.d-src{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.src{font-size:12.5px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:10px 18px;opacity:.4;transition:opacity .5s var(--spring),color .5s ease,border-color .5s ease,box-shadow .5s ease}
+.src.on{opacity:1;color:var(--c);border-color:var(--c);box-shadow:0 0 26px -10px var(--c)}
+.d-learn{font-size:16px;color:var(--muted);opacity:0;transition:opacity .5s ease}
+.d-learn.on{opacity:1}
+.d-learn i{font-style:normal;animation:ld 1.2s infinite}
+.d-learn i:nth-child(2){animation-delay:.2s}
+.d-learn i:nth-child(3){animation-delay:.4s}
+@keyframes ld{0%,100%{opacity:.2}50%{opacity:1}}
+[data-demo="learn"] .d-cap.out,[data-demo="learn"] .d-foot{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s var(--spring)}
+[data-demo="learn"].lit .d-cap.out,[data-demo="learn"].lit .d-foot{opacity:1;transform:none}
+/* 06 people */
+.d-card{font-size:17px;color:#c7cad2;border:1px solid var(--line);border-radius:14px;padding:18px 22px;opacity:0;transform:translateX(24px);transition:opacity .4s ease,transform .6s var(--spring)}
+.d-card b{color:var(--text);font-weight:600}
+.d-card.on{opacity:1;transform:none}
+.keyline{margin-top:44px;font-weight:400;font-size:17px}
+.coming{display:inline-block;margin-top:36px;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--faint)}
+
+/* ---------- TRUST ---------- */
+/* terms: industry line struck through, Irisen term replaces it */
+.terms{margin:64px auto 0;max-width:620px;display:flex;flex-direction:column;gap:34px;text-align:center;align-items:center}
+.term{display:flex;flex-direction:column;gap:8px}
+.t-old{position:relative;font-size:16px;color:var(--faint);width:fit-content}
+.t-old::after{content:"";position:absolute;left:0;top:52%;height:1.5px;width:0%;background:var(--text);transition:width .6s var(--ease-io)}
+.term.struck .t-old::after{width:100%}
+.t-new{font-weight:600;font-size:19px;color:var(--white);opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .55s var(--spring)}
+.term.struck .t-new{opacity:1;transform:none}
+
+/* ---------- CTA / FOOTER ---------- */
+#final{text-align:center}
+#final .wl-form,#final .wl-done{margin-left:auto;margin-right:auto}
+footer{padding:80px 32px 56px;text-align:center;border-top:1px solid var(--line)}
+.vals{font-size:12px;letter-spacing:.5em;text-transform:uppercase;font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fine{margin-top:20px;font-size:11.5px;color:var(--faint)}
+
+/* ---------- DESKTOP: compact side-by-side (mobile stays centered) ---------- */
+@media(min-width:821px){
+  /* pillars stay centered like the rest of the page */
+  /* iris features: number | text | animation, side by side */
+  .fitem{display:grid;grid-template-columns:56px .82fr 1.18fr;gap:clamp(36px,5vw,72px);align-items:center;text-align:left;padding:74px 0}
+  .fitem:first-of-type{margin-top:64px}
+  .fnum{align-self:start;padding-top:6px}
+  .fitem h3{max-width:none}
+  .fitem .f-text p{margin-left:0;margin-right:0;max-width:400px}
+  .f-demo{margin:0;max-width:none;width:auto}
+  /* un-center the animation internals on desktop */
+  .d-tags{justify-content:flex-start}
+  .d-big{justify-content:flex-start}
+  .d-line{margin:0}
+  .d-why{margin:0}
+  .d-spark{justify-content:flex-start}
+  .d-pulse{margin:0 0 0 150px}
+  .d-src{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="wrap">
+    <div id="eye-wrap" style="max-width:300px;margin-bottom:44px">
+      <!-- Brand Board v3 "3D DEPTH · PRIMARY" SVG, verbatim — gaze runs the exact gz keyframes -->
+      <svg viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><defs><radialGradient id="h-m" cx="28%" cy="18%" r="88%"><stop offset="0%" stop-color="#E9FEFB"/><stop offset="18%" stop-color="#18D7C6"/><stop offset="38%" stop-color="#27A6F4"/><stop offset="58%" stop-color="#5B7CFA"/><stop offset="78%" stop-color="#8B5CF6"/><stop offset="92%" stop-color="#D050D8"/><stop offset="100%" stop-color="#5E2350"/></radialGradient><radialGradient id="h-s" cx="22%" cy="14%" r="50%"><stop offset="0%" stop-color="rgba(255,255,255,0.55)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient><radialGradient id="h-n" cx="50%" cy="50%" r="50%"><stop offset="58%" stop-color="rgba(255,255,255,0)"/><stop offset="100%" stop-color="rgba(190,120,255,0.30)"/></radialGradient><filter id="h-fl" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><ellipse cx="0" cy="0" rx="170" ry="110" fill="#8B5CF6" filter="url(#h-fl)" opacity="0.3"/><ellipse cx="0" cy="0" rx="172" ry="112" fill="url(#h-m)"/><ellipse cx="0" cy="0" rx="172" ry="112" fill="url(#h-s)"/><ellipse cx="6" cy="8" rx="118" ry="72" fill="#0e0e0e"/><ellipse cx="6" cy="8" rx="118" ry="72" fill="url(#h-n)"/><g class="gz"><g transform="rotate(22)"><path d="M 0,-92 C 32,-56 56,-32 92,0 C 56,32 32,56 0,92 C -32,56 -56,32 -92,0 C -56,-32 -32,-56 0,-92 Z" fill="url(#h-m)"/><path d="M 0,-92 C 32,-56 56,-32 92,0 C 56,32 32,56 0,92 C -32,56 -56,32 -92,0 C -56,-32 -32,-56 0,-92 Z" fill="url(#h-s)"/><circle cx="0" cy="0" r="42" fill="#0e0e0e"/><circle cx="0" cy="0" r="42" fill="url(#h-n)"/></g></g><ellipse cx="0" cy="0" rx="172" ry="112" fill="none" stroke="rgba(255,255,255,0.26)" stroke-width="2"/></svg>
+    </div>
+    <p class="tagline">The science of a happy life</p>
+    <h1>One system for your whole life.</h1>
+    <p class="pill-line" style="justify-content:center"><span style="color:var(--phys)">Physical</span><span style="color:var(--ment)">Mental</span><span style="color:var(--soc)">Social</span><span style="color:var(--fin)">Financial</span></p>
+    <form class="wl-form" data-wl>
+      <input type="email" name="email" required placeholder="your@email.com" aria-label="Email address" autocomplete="email">
+      <button type="submit">Get early access</button>
+    </form>
+    <div class="wl-done"><span class="big">You're <span class="grad-text" data-pos>#1</span> in line.</span><span class="fine">One email when your cohort opens. Move up — send this to the one friend managing their life in silos.</span></div>
+    <p class="wl-note">No account needed. No spam. Early access only.</p>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<div id="problem-pin">
+<section id="problem">
+  <div class="wrap">
+    <div class="slabel rv">The problem</div>
+    <p class="line"><span class="pw">You</span> <span class="pw">already</span> <span class="pw">know</span> <span class="pw">what</span><br><span class="pw">you</span> <span class="pw">should</span> <span class="pw">be</span> <span class="pw">doing.</span></p>
+    <p class="line" style="margin-top:40px"><span class="pw">You</span> <span class="pw">just</span> <span class="pw">don't</span> <span class="pw">keep</span> <span class="pw">doing</span> <span class="pw">it.</span></p>
+  </div>
+</section>
+</div>
+
+<!-- ============ PILLARS ============ -->
+<section id="pillars">
+  <div class="wrap">
+    <div class="feat">
+      <div class="f-text rv">
+        <div class="slabel">Four pillars. One score.</div>
+        <h2>Your whole life, one number.</h2>
+        <p class="sub-line">When one pillar moves, the whole score moves with it.</p>
+        <div style="margin-top:28px"><span id="ps-num" style="font-size:clamp(56px,7vw,96px);font-weight:800;color:var(--white)">–</span><div class="ps-cap">Life score · live</div></div>
+      </div>
+      <div class="f-visual rv" id="ps-stage">
+        <div class="ps-col" data-base="72" data-w="0.9" data-p="0" style="--c:var(--phys)"><em>72</em><b></b><span>Physical</span></div>
+        <div class="ps-col" data-base="58" data-w="1.3" data-p="1.8" style="--c:var(--ment)"><em>58</em><b></b><span>Mental</span></div>
+        <div class="ps-col" data-base="41" data-w="1.1" data-p="5.1" style="--c:var(--soc)"><em>41</em><b></b><span>Social</span></div>
+        <div class="ps-col" data-base="64" data-w="0.7" data-p="3.4" style="--c:var(--fin)"><em>64</em><b></b><span>Financial</span></div>
+      </div>
+    </div>
+    <div class="pillar-copy">
+      <div class="rv" style="transition-delay:.05s"><h3 style="color:var(--phys)">Physical</h3><p>Body, energy, sleep, movement.</p></div>
+      <div class="rv" style="transition-delay:.15s"><h3 style="color:var(--ment)">Mental</h3><p>Focus, clarity, mood, stress.</p></div>
+      <div class="rv" style="transition-delay:.25s"><h3 style="color:var(--soc)">Social</h3><p>Relationships, connection, community.</p></div>
+      <div class="rv" style="transition-delay:.35s"><h3 style="color:var(--fin)">Financial</h3><p>Income, spending, savings, growth.</p></div>
+    </div>
+    <p class="connect-line rv">All four are connected. Irisen tracks them together, not in isolation.</p>
+  </div>
+</section>
+
+<!-- ============ IRIS ============ -->
+<section id="iris">
+  <div class="wrap">
+    <div class="slabel rv">Iris — your AI</div>
+    <h2 class="rv">She knows your life.</h2>
+
+    <!-- 01 zero-setup mapping -->
+    <div class="fitem rv"><span class="fnum">01</span>
+      <div class="f-text"><h3>Just talk. Iris builds the structure.</h3>
+        <p>No templates. No folders. No setup.</p></div>
+      <div class="f-demo" data-demo="map">
+        <div class="d-cap">You say</div>
+        <div class="d-type"><span class="d-txt"></span><span class="d-caret"></span></div>
+        <div class="d-cap out">Iris files it under</div>
+        <div class="d-tags"><span class="d-tag" style="--c:var(--phys)">PHYSICAL</span><span class="d-tag" style="--c:var(--fin)">FINANCIAL</span></div>
+      </div>
+    </div>
+
+    <!-- 02 honest scores -->
+    <div class="fitem rv"><span class="fnum">02</span>
+      <div class="f-text"><h3>Scored from what you do. Not what you say.</h3>
+        <p>Four pillars, updated daily, from observed data.</p></div>
+      <div class="f-demo" data-demo="scores">
+        <div class="d-cap">Your four pillars · today</div>
+        <div class="d-score" style="--c:var(--phys)" data-v="72"><span>Physical</span><i></i><em>0</em></div>
+        <div class="d-score" style="--c:var(--ment)" data-v="58"><span>Mental</span><i></i><em>0</em></div>
+        <div class="d-score" style="--c:var(--soc)" data-v="41"><span>Social</span><i></i><em>0</em></div>
+        <div class="d-score" style="--c:var(--fin)" data-v="64"><span>Financial</span><i></i><em>0</em></div>
+      </div>
+    </div>
+
+    <!-- 03 diagnosis -->
+    <div class="fitem rv"><span class="fnum">03</span>
+      <div class="f-text"><h3>Dashboards show numbers. Iris explains them.</h3>
+        <p>She finds what's actually dragging everything — and tells you.</p></div>
+      <div class="f-demo" data-demo="diag">
+        <div class="d-cap">Lowest pillar</div>
+        <div class="d-big"><b style="color:var(--ment)">58</b><span>MENTAL</span></div>
+        <svg class="d-line" viewBox="0 0 120 60"><path d="M8,8 C50,8 60,50 112,50" fill="none" stroke="rgba(244,243,234,.35)" stroke-width="1.5" stroke-dasharray="160" stroke-dashoffset="160"/></svg>
+        <div class="d-cap out">Root cause</div>
+        <div class="d-why">Sleep broke <b>2 weeks ago</b> — that's the real cause.</div>
+      </div>
+    </div>
+
+    <!-- 04 cross-pillar -->
+    <div class="fitem rv"><span class="fnum">04</span>
+      <div class="f-text"><h3>She sees what you can't.</h3>
+        <p>Patterns across pillars — where every other app goes blind.</p></div>
+      <div class="f-demo" data-demo="pattern">
+        <div class="d-cap">Two pillars · same week</div>
+        <div class="d-spark"><span style="color:var(--phys)">SLEEP</span><svg viewBox="0 0 160 36"><polyline points="0,12 30,10 60,14 90,30 120,28 160,30" fill="none" stroke="var(--phys)" stroke-width="2"/></svg></div>
+        <div class="d-pulse"></div>
+        <div class="d-spark"><span style="color:var(--soc)">SOCIAL</span><svg viewBox="0 0 160 36"><polyline points="0,10 30,12 60,10 90,12 120,30 160,32" fill="none" stroke="var(--soc)" stroke-width="2"/></svg></div>
+        <div class="d-foot">Sleep dropped. <b>Three days later, so did your social life.</b></div>
+      </div>
+    </div>
+
+    <!-- 05 integrations / improve -->
+    <div class="fitem rv"><span class="fnum">05</span>
+      <div class="f-text"><h3>Connect your life. Iris learns in the background.</h3>
+        <p>Calendar, bank, wearable, messages — she gets sharper the more she sees. No manual logging.</p></div>
+      <div class="f-demo" data-demo="learn">
+        <div class="d-cap">Connected · learning silently</div>
+        <div class="d-src">
+          <span class="src" style="--c:var(--soc)">Calendar</span>
+          <span class="src" style="--c:var(--fin)">Bank</span>
+          <span class="src" style="--c:var(--phys)">Wearable</span>
+          <span class="src" style="--c:var(--ment)">Messages</span>
+        </div>
+        <div class="d-learn">Iris is learning<i>.</i><i>.</i><i>.</i></div>
+        <div class="d-cap out">Your data, your terms</div>
+        <div class="d-foot"><b>Processed, then deleted within 72 hours.</b> Never sold. Not anonymised. Not ever.</div>
+      </div>
+    </div>
+
+    <!-- 06 honesty engine -->
+    <div class="fitem rv"><span class="fnum">06</span>
+      <div class="f-text"><h3>She doesn't take your word for it.</h3>
+        <p>What you say is a hypothesis. She watches what you do.</p></div>
+      <div class="f-demo chat" data-demo="chat">
+        <div class="d-cap">What you say vs. what you do</div>
+        <div class="msg user">I'm disciplined with money.</div>
+        <div class="msg iris">The data says otherwise — three impulse buys this week, all after midnight. Let's fix the system, not the story: I've drafted a 24-hour rule for anything over $50.</div>
+        <div class="typing"><b></b><b></b><b></b></div>
+      </div>
+    </div>
+
+    <!-- 07 people -->
+    <div class="fitem rv"><span class="fnum">07</span>
+      <div class="f-text"><h3>She knows your friends exist.</h3>
+        <p>A memory for the relationships you keep meaning to keep.</p></div>
+      <div class="f-demo" data-demo="people">
+        <div class="d-cap">People you keep meaning to reach</div>
+        <div class="d-card">Call your mum — it's been <b>12 days</b></div>
+        <div class="d-card">Ben's birthday — <b>in 9 days</b></div>
+        <div class="d-card">You promised Sam a catch-up — <b>3 weeks ago</b></div>
+      </div>
+    </div>
+
+    <p class="keyline rv">Iris handles the small things. You focus on the big ones.</p>
+    <span class="coming rv">In development — early access opens in cohorts</span>
+  </div>
+</section>
+
+<!-- ============ TRUST ============ -->
+<section id="trust">
+  <div class="wrap">
+    <div class="slabel rv">The terms</div>
+    <h2 class="rv">The industry's terms, rewritten.</h2>
+    <div class="terms">
+      <div class="term rv"><span class="t-old">Your data is sold to advertisers</span><span class="t-new">Never sold. Not anonymised. Not ever.</span></div>
+      <div class="term rv"><span class="t-old">Free — because you are the product</span><span class="t-new">Paid only. You are the only customer.</span></div>
+      <div class="term rv"><span class="t-old">Designed to agree with you</span><span class="t-new">Honest by default. Built to push back.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section id="final">
+  <div class="wrap">
+    <h2 class="rv">Join the waitlist.</h2>
+    <form class="wl-form rv" data-wl style="margin-top:44px">
+      <input type="email" name="email" required placeholder="your@email.com" aria-label="Email address" autocomplete="email">
+      <button type="submit">Get early access</button>
+    </form>
+    <div class="wl-done"><span class="big">You're <span class="grad-text" data-pos>#1</span> in line.</span><span class="fine">One email when your cohort opens.</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+    <span style="font-size:12px;color:var(--faint)">© 2026 Irisen Ltd. All rights reserved.</span>
+    <span style="font-size:12px;color:var(--faint);display:flex;gap:22px">
+      <a href="/terms" style="color:var(--muted);text-decoration:none">Terms of Service</a>
+      <a href="/privacy" style="color:var(--muted);text-decoration:none">Privacy Policy</a>
+      <a href="mailto:hello@irisen.ai" style="color:var(--muted);text-decoration:none">Contact</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* ---------- progress bar + hero parallax (kept) ---------- */
+const bar=document.getElementById('progress'), eyeWrap=document.getElementById('eye-wrap');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  const y=Math.min(h.scrollTop,innerHeight);
+  eyeWrap.style.transform=`translateY(${y*0.22}px) scale(${1-y/innerHeight*0.12})`;
+  eyeWrap.style.opacity=1-y/innerHeight*0.6;
+},{passive:true});
+
+/* ---------- problem: words light up as you scroll ---------- */
+(function(){
+  const pin=document.getElementById('problem-pin');if(!pin)return;
+  const words=[...pin.querySelectorAll('.pw')];
+  window.addEventListener('scroll',()=>{
+    const r=pin.getBoundingClientRect();
+    const room=pin.offsetHeight-innerHeight;
+    const p=Math.max(0,Math.min(1,-r.top/room));
+    const lit=Math.round(p*1.15*words.length);
+    words.forEach((w,i)=>w.classList.toggle('lit',i<lit));
+  },{passive:true});
+})();
+
+/* ---------- spring reveals (kept) ---------- */
+const rio=new IntersectionObserver(es=>es.forEach(en=>{
+  if(!en.isIntersecting)return;
+  en.target.classList.add('vis');rio.unobserve(en.target);
+}),{threshold:.25});
+document.querySelectorAll('.rv').forEach(el=>rio.observe(el));
+
+/* ---------- combined pillars: live motion drives the score (kept) ---------- */
+(function(){
+  const cols=[...document.querySelectorAll('.ps-col')], numEl=document.getElementById('ps-num');
+  if(!cols.length)return;
+  let on=false;
+  new IntersectionObserver(es=>es.forEach(en=>{on=en.isIntersecting}),{threshold:.3}).observe(document.getElementById('ps-stage'));
+  const t0=performance.now();
+  (function tick(now){
+    requestAnimationFrame(tick);
+    if(!on)return;
+    const t=(now-t0)/1000; let sum=0;
+    for(const c of cols){
+      const h=(+c.dataset.base)+Math.sin(t*(+c.dataset.w)+(+c.dataset.p))*9;
+      c.querySelector('b').style.height=h+'%';
+      c.querySelector('em').textContent=Math.round(h);
+      sum+=h;
+    }
+    numEl.textContent=Math.round(sum/cols.length);
+  })(t0);
+})();
+
+/* ---------- feature demos: self-playing, triggered on scroll ---------- */
+(function(){
+  const demos=document.querySelectorAll('.f-demo');
+  const dio=new IntersectionObserver(es=>es.forEach(en=>{
+    const d=en.target;
+    if(!en.isIntersecting){d.dataset.run='';return}
+    if(d.dataset.run)return;
+    d.dataset.run='1';
+    const kind=d.dataset.demo;
+    if(kind==='map'){
+      const txt=d.querySelector('.d-txt'), tags=d.querySelectorAll('.d-tag');
+      const line="I haven't been sleeping and I'm stressed about money.";
+      (function loop(){
+        if(!d.dataset.run)return;
+        txt.textContent='';tags.forEach(t=>t.classList.remove('on'));
+        let i=0;
+        const tI=setInterval(()=>{
+          if(!d.dataset.run){clearInterval(tI);return}
+          txt.textContent=line.slice(0,++i);
+          if(i>=line.length){clearInterval(tI);
+            setTimeout(()=>tags[0].classList.add('on'),350);
+            setTimeout(()=>tags[1].classList.add('on'),650);
+            setTimeout(loop,4200);
+          }
+        },34);
+      })();
+    }
+    if(kind==='scores'){
+      d.querySelectorAll('.d-score').forEach((s,idx)=>{
+        const v=+s.dataset.v;
+        s.style.setProperty('--w',v+'%');
+        setTimeout(()=>{
+          s.classList.add('on');
+          let n=0;const em=s.querySelector('em');
+          const c=setInterval(()=>{n+=2;if(n>=v){n=v;clearInterval(c)}em.textContent=n},24);
+        },idx*220);
+      });
+    }
+    if(kind==='diag'||kind==='pattern'){d.classList.add('play')}
+    if(kind==='people'){
+      const cards=d.querySelectorAll('.d-card');
+      (function loop(){
+        if(!d.dataset.run)return;
+        cards.forEach(c=>c.classList.remove('on'));
+        cards.forEach((c,i)=>setTimeout(()=>c.classList.add('on'),300+i*450));
+        setTimeout(loop,5200);
+      })();
+    }
+    if(kind==='learn'){
+      const srcs=d.querySelectorAll('.src'), learn=d.querySelector('.d-learn');
+      (function loop(){
+        if(!d.dataset.run)return;
+        d.classList.remove('lit');learn.classList.remove('on');srcs.forEach(s=>s.classList.remove('on'));
+        srcs.forEach((s,i)=>setTimeout(()=>{if(d.dataset.run)s.classList.add('on')},300+i*380));
+        const after=300+srcs.length*380;
+        setTimeout(()=>{if(d.dataset.run)learn.classList.add('on')},after+150);
+        setTimeout(()=>{if(d.dataset.run)d.classList.add('lit')},after+800);
+        setTimeout(loop,after+4600);
+      })();
+    }
+  }),{threshold:.45});
+  demos.forEach(d=>dio.observe(d));
+})();
+
+/* ---------- terms: strike the industry default, reveal ours ---------- */
+(function(){
+  const terms=document.querySelectorAll('.term');
+  const tio=new IntersectionObserver(es=>es.forEach(en=>{
+    if(!en.isIntersecting)return;
+    const i=[...terms].indexOf(en.target);
+    setTimeout(()=>en.target.classList.add('struck'),300+i*420);
+    tio.unobserve(en.target);
+  }),{threshold:.6});
+  terms.forEach(t=>tio.observe(t));
+})();
+
+/* ---------- Iris chat: self-playing demo loop (kept) ---------- */
+(function(){
+  const chat=document.querySelector('.chat');if(!chat)return;
+  const msgs=[...chat.querySelectorAll('.msg')], dots=chat.querySelector('.typing');
+  let running=false;
+  function playLoop(){
+    if(!running)return;
+    msgs.forEach(m=>m.classList.remove('vis'));dots.classList.remove('on');
+    let t=600;
+    msgs.forEach(m=>{
+      const isIris=m.classList.contains('iris');
+      if(isIris){setTimeout(()=>{if(running)dots.classList.add('on')},t);t+=1400;}
+      setTimeout(()=>{if(!running)return;dots.classList.remove('on');m.classList.add('vis')},t);
+      t+=isIris?2600:1100;
+    });
+    setTimeout(playLoop,t+2500);
+  }
+  new IntersectionObserver(es=>es.forEach(en=>{
+    if(en.isIntersecting&&!running){running=true;playLoop()}
+    if(!en.isIntersecting)running=false;
+  }),{threshold:.35}).observe(chat);
+})();
+
+/* ---------- waitlist: submit to Formspree (AJAX), instant confirmation ---------- */
+const FORMSPREE_ENDPOINT='https://formspree.io/f/xbdveyon';
+/* one-time reset of the local position counter back to 0 */
+if(localStorage.getItem('irisen-wl-v')!=='3'){localStorage.removeItem('irisen-wl');localStorage.setItem('irisen-wl-v','3');}
+document.querySelectorAll('[data-wl]').forEach(f=>{
+  f.addEventListener('submit',e=>{
+    e.preventDefault();
+    const input=f.querySelector('input[type=email]')||f.querySelector('input');
+    const email=input.value;
+    const utm=new URLSearchParams(location.search).get('utm_source')||'';
+    const done=f.parentElement.querySelector('.wl-done');
+    const note=f.parentElement.querySelector('.wl-note');
+    const oldErr=f.parentElement.querySelector('.wl-err');if(oldErr)oldErr.remove();
+    /* confirm immediately — feels instant */
+    const position=+(localStorage.getItem('irisen-wl')||0)+1;
+    localStorage.setItem('irisen-wl',position);
+    done.querySelector('[data-pos]').textContent='#'+position;
+    f.style.display='none';done.style.display='flex';
+    if(note)note.style.display='none';
+    /* send in the background; revert only if it actually fails */
+    const fd=new FormData();fd.append('email',email);if(utm)fd.append('utm_source',utm);
+    fetch(FORMSPREE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:fd})
+      .then(res=>{if(!res.ok)throw new Error('submit failed');})
+      .catch(()=>{
+        done.style.display='none';f.style.display='';if(note)note.style.display='';
+        localStorage.setItem('irisen-wl',position-1);
+        const m=document.createElement('p');m.className='wl-err';
+        m.style.cssText='margin-top:14px;font-size:13px;color:#FF6B8A;letter-spacing:.02em';
+        m.textContent='Something went wrong. Please try again.';
+        f.parentNode.insertBefore(m,f.nextSibling);
+      });
+  });
+});
+</script>
+</body>
+</html>
